@@ -1,0 +1,1039 @@
+Student Management System - Complete A-to-Z Setup and Usage Guide
+
+1. What This Project Is
+
+This is an intermediate-level Student Management System built with:
+
+-   HTML - webpage structure
+-   CSS - design and responsive layout
+-   JavaScript - browser-side functionality
+-   Node.js - server-side runtime
+-   Express.js - backend web framework
+-   MySQL - relational database
+-   JWT + HTTP-only cookie - login session
+-   bcryptjs - password hashing
+
+The system can be used to manage student records, attendance,
+marks/results, and user roles.
+
+This project is intended for local development and learning. It is not
+configured as a production deployment package.
+
+------------------------------------------------------------------------
+
+2. What You Need Before Starting
+
+You need these programs on your computer:
+
+1.  A modern web browser
+    -   Google Chrome
+    -   Microsoft Edge
+    -   Mozilla Firefox
+2.  Node.js
+    -   Install an LTS version.
+    -   Node.js includes npm, which is used to install the project’s
+        backend packages.
+3.  MySQL Server
+    -   MySQL 8.x is recommended.
+    -   MySQL Server is the actual database service.
+4.  MySQL Workbench (recommended)
+    -   Workbench provides a graphical interface for running the SQL
+        database script.
+    -   You can use another MySQL client if you already know how to use
+        one.
+5.  The Student Management System ZIP file
+
+You do NOT need XAMPP for this project. The backend is powered by
+Node.js, and the database is MySQL.
+
+------------------------------------------------------------------------
+
+3. Step 1 - Download and Install Node.js
+
+Windows
+
+1.  Open your browser.
+2.  Go to the official Node.js website: https://nodejs.org/
+3.  Download the current LTS version.
+4.  Run the installer.
+5.  Keep the default options unless you have a specific reason to change
+    them.
+6.  Finish the installation.
+
+Verify Node.js
+
+Open Command Prompt or PowerShell and run:
+
+    node -v
+
+You should see a version number.
+
+Then run:
+
+    npm -v
+
+You should also see a version number.
+
+If both commands return version numbers, Node.js and npm are installed
+correctly.
+
+If “node is not recognized” appears
+
+Close Command Prompt/PowerShell and open it again.
+
+If it still does not work, restart the computer and test again.
+
+If the problem remains, reinstall Node.js and make sure the option that
+adds Node.js to PATH is enabled.
+
+------------------------------------------------------------------------
+
+4. Step 2 - Install MySQL Server
+
+Windows
+
+1.  Open the official MySQL website:
+    https://downloads.mysql.com/archives/installer/
+2.  Download MySQL Installer for Windows.
+3.  Start the installer.
+4.  For a normal development setup, install:
+    -   MySQL Server
+    -   MySQL Workbench
+5.  During MySQL Server configuration, you will be asked to create a
+    root password.
+6.  Remember this password. The application will use it to connect to
+    MySQL.
+7.  Complete the installation.
+
+Important
+
+The MySQL Server service must be running before you start the Student
+Management System.
+
+MySQL Workbench is only a tool for managing the database. MySQL Server
+is the database service itself.
+
+------------------------------------------------------------------------
+
+5. Step 3 - Download and Extract the Project ZIP
+
+1.  Download the Student Management System ZIP.
+
+2.  Open your Downloads folder.
+
+3.  Right-click the ZIP file.
+
+4.  Choose “Extract All”.
+
+5.  Extract it somewhere easy to find, for example:
+
+    C:-management-system
+
+Do not run the project directly from inside the ZIP file.
+
+After extraction, you should see files/folders similar to:
+
+    student-management-system/
+        database/
+        middleware/
+        public/
+        .env.example
+        .gitignore
+        package.json
+        README.md
+        server.js
+        SETUP_GUIDE.txt
+
+------------------------------------------------------------------------
+
+6. Step 4 - Open the Project Folder in a Terminal
+
+Easy Windows method
+
+1.  Open the extracted project folder in File Explorer.
+
+2.  Click the address bar.
+
+3.  Type:
+
+    cmd
+
+4.  Press Enter.
+
+A Command Prompt window will open in that folder.
+
+You can also use PowerShell or Windows Terminal.
+
+Verify that you are in the correct folder
+
+Run:
+
+    dir
+
+You should see package.json and server.js.
+
+If you do not see these files, you are in the wrong folder. Use cd to
+move into the project folder.
+
+Example:
+
+    cd C:\Projects\student-management-system
+
+------------------------------------------------------------------------
+
+7. Step 5 - Install the Project Dependencies
+
+Inside the project folder, run:
+
+    npm install
+
+What does this do?
+
+The project contains a package.json file.
+
+That file tells npm which backend packages the project needs.
+
+npm install downloads those packages into a node_modules folder.
+
+The first installation can take some time.
+
+When it finishes without an error, the project dependencies are
+installed.
+
+Do not delete package.json
+
+package.json is required to install and run the project.
+
+The node_modules folder is generated automatically and can be very
+large. It is normally not included in the ZIP/repository.
+
+------------------------------------------------------------------------
+
+8. Step 6 - Create the MySQL Database
+
+There are two normal ways to run the provided SQL file. MySQL Workbench
+is recommended for beginners.
+
+Method A - MySQL Workbench
+
+1.  Open MySQL Workbench.
+
+2.  Open your local MySQL connection.
+
+3.  Enter the MySQL root password you created during installation.
+
+4.  Open:
+
+    database/schema.sql
+
+    from the project folder.
+
+5.  Copy its contents into a new SQL tab in Workbench, or open the file
+    in Workbench.
+
+6.  Execute the SQL script.
+
+The script creates the required database, tables, indexes, and demo
+data.
+
+Important warning
+
+The supplied schema.sql contains commands that can drop existing project
+tables before recreating them.
+
+Therefore:
+
+-   Run it during initial setup.
+-   If you run it again later, existing Student Management System data
+    may be deleted/reset.
+-   Do NOT repeatedly run it on a database containing important real
+    data.
+
+Check that the database exists
+
+In MySQL Workbench, refresh the Schemas panel.
+
+You should see:
+
+    student_management
+
+Expand it and check that the project’s tables were created.
+
+------------------------------------------------------------------------
+
+9. Step 7 - Configure the Environment File
+
+The project includes:
+
+    .env.example
+
+You need to create your own .env file.
+
+Windows
+
+In the project folder:
+
+1.  Make a copy of .env.example.
+
+2.  Rename the copy to:
+
+    .env
+
+Make sure the file is exactly .env, not .env.txt.
+
+Open .env
+
+A typical local configuration looks like:
+
+    PORT=3000
+    DB_HOST=localhost
+    DB_USER=root
+    DB_PASSWORD=YOUR_MYSQL_ROOT_PASSWORD
+    DB_NAME=student_management
+    JWT_SECRET=CHANGE_THIS_TO_A_LONG_RANDOM_SECRET
+
+Change these values
+
+DB_HOST
+
+Usually:
+
+    localhost
+
+DB_USER
+
+If you installed MySQL normally and use the root account:
+
+    root
+
+DB_PASSWORD
+
+Replace:
+
+    YOUR_MYSQL_ROOT_PASSWORD
+
+with the password you created for MySQL.
+
+For example:
+
+    DB_PASSWORD=123456
+
+Use your real MySQL password, not necessarily 123456.
+
+DB_NAME
+
+Keep:
+
+    student_management
+
+because that is the database created by the SQL script.
+
+JWT_SECRET
+
+Replace the example value with a long random secret.
+
+Example:
+
+    JWT_SECRET=student_management_local_secret_change_this_2026
+
+For production, use a much longer random secret and keep it private.
+
+------------------------------------------------------------------------
+
+10. Step 8 - Start the Project
+
+Make sure:
+
+-   MySQL Server is running.
+-   You are inside the project folder.
+-   npm install completed successfully.
+-   .env exists.
+-   The student_management database exists.
+
+Now run:
+
+    npm start
+
+If everything is configured correctly, the terminal should indicate that
+the server is running.
+
+The default address is:
+
+    http://localhost:3000
+
+Keep this terminal window open while using the application.
+
+------------------------------------------------------------------------
+
+11. Step 9 - Open the Website
+
+Open Chrome, Edge, or Firefox.
+
+Enter:
+
+    http://localhost:3000
+
+The Student Management System login page should open.
+
+If the page does not open, see the Troubleshooting section below.
+
+------------------------------------------------------------------------
+
+12. Step 10 - Login With the Demo Accounts
+
+The database seed includes demo accounts.
+
+Admin
+
+Email:
+
+    admin@example.com
+
+Password:
+
+    admin123
+
+Faculty
+
+Email:
+
+    faculty@example.com
+
+Password:
+
+    faculty123
+
+These are development/demo credentials. Change them before using the
+application with real users or real data.
+
+------------------------------------------------------------------------
+
+13. Step 11 - Understand the User Roles
+
+Admin
+
+The Admin account has administrative access to the management functions.
+
+Depending on the current application implementation, administrative
+functions include managing student records and accessing
+dashboard/reporting features.
+
+Faculty
+
+The Faculty account is intended for academic operations such as
+attendance and marks.
+
+The backend checks the authenticated user’s role before allowing
+protected operations.
+
+Do not assume that hiding a button in the browser is a security feature.
+The backend is responsible for authorization.
+
+------------------------------------------------------------------------
+
+14. Step 12 - How to Use the Dashboard
+
+After login, the dashboard provides an overview of the system.
+
+Typical information includes:
+
+-   Total students
+-   Attendance-related information
+-   Marks/results information
+-   Other basic management statistics
+
+Use the navigation provided by the application to move between
+management sections.
+
+------------------------------------------------------------------------
+
+15. Step 13 - Add a Student
+
+To add a student:
+
+1.  Open the Students section.
+2.  Choose the add/new student option.
+3.  Enter the required student information.
+4.  Submit the form.
+5.  The browser sends the data to the Node.js backend.
+6.  The backend validates/processes the request.
+7.  The backend stores the record in MySQL.
+8.  The student list is updated.
+
+Use realistic test data while developing.
+
+------------------------------------------------------------------------
+
+16. Step 14 - Edit a Student
+
+To edit an existing student:
+
+1.  Open the Students section.
+2.  Find the required student.
+3.  Click the edit action.
+4.  Change the required information.
+5.  Save the changes.
+
+The frontend sends the update to the backend, and the backend updates
+the corresponding MySQL record.
+
+------------------------------------------------------------------------
+
+17. Step 15 - Delete a Student
+
+To delete a student:
+
+1.  Find the student.
+2.  Select the delete action.
+3.  Confirm the deletion if the application asks for confirmation.
+
+Be careful with deletion.
+
+Because this is a relational database, related records such as
+attendance or marks may also be affected depending on the foreign-key
+rules defined in the SQL schema.
+
+Do not use real student data until you have tested your backup/recovery
+process.
+
+------------------------------------------------------------------------
+
+18. Step 16 - Search and Filter Students
+
+Use the search/filter controls in the student management area to find
+students.
+
+This is useful when the database contains many records.
+
+Search results are loaded through the application’s API rather than
+requiring you to manually query MySQL.
+
+------------------------------------------------------------------------
+
+19. Step 17 - Record Attendance
+
+The attendance module allows attendance information to be recorded.
+
+Typical workflow:
+
+1.  Open Attendance.
+2.  Select the relevant date/class information.
+3.  Review the students.
+4.  Mark the attendance status.
+5.  Save the attendance.
+
+The data is sent to the Node.js server and stored in MySQL.
+
+------------------------------------------------------------------------
+
+20. Step 18 - Enter Marks and Results
+
+The marks module is used to enter/update academic marks.
+
+Typical workflow:
+
+1.  Open the Marks/Results section.
+2.  Select the student.
+3.  Enter the required marks.
+4.  Save the marks.
+5.  Review the calculated percentage/result information.
+
+The application contains basic result calculation logic.
+
+For a real college/school system, you should confirm the grading rules,
+passing criteria, subjects, maximum marks, and result policy with the
+institution before relying on the calculations.
+
+------------------------------------------------------------------------
+
+21. Step 19 - Stop the Project
+
+When you are finished working:
+
+1.  Go to the terminal where npm start is running.
+
+2.  Press:
+
+    Ctrl + C
+
+3.  Confirm if Windows asks you to terminate the process.
+
+The Node.js server will stop.
+
+MySQL can continue running as a Windows service.
+
+------------------------------------------------------------------------
+
+22. Step 20 - Start the Project Again Later
+
+You do not need to install everything again.
+
+Next time:
+
+1.  Start MySQL Server.
+
+2.  Open the project folder.
+
+3.  Open Command Prompt/PowerShell in that folder.
+
+4.  Run:
+
+    npm start
+
+5.  Open:
+
+    http://localhost:3000
+
+Only run npm install again if dependencies are missing or package.json
+has changed.
+
+------------------------------------------------------------------------
+
+23. Project Folder Explanation
+
+package.json
+
+Contains project metadata and npm dependencies/scripts.
+
+server.js
+
+Main Node.js/Express server.
+
+It handles:
+
+-   API routes
+-   authentication
+-   student operations
+-   attendance operations
+-   marks operations
+-   database communication
+-   serving the frontend
+
+database/schema.sql
+
+Creates the MySQL database structure and seed/demo data.
+
+middleware/auth.js
+
+Contains authentication/authorization middleware used to protect backend
+routes.
+
+public/index.html
+
+Main frontend page.
+
+public/css/style.css
+
+Frontend styling and responsive layout.
+
+public/js/app.js
+
+Browser-side JavaScript that communicates with the backend API and
+updates the interface.
+
+.env.example
+
+Example environment configuration.
+
+.env
+
+Your private local configuration.
+
+Do not publish your real .env file to GitHub.
+
+.gitignore
+
+Lists files/folders that Git should normally ignore, such as
+node_modules and .env.
+
+------------------------------------------------------------------------
+
+24. How the Application Works Internally
+
+The basic request flow is:
+
+    Browser
+       |
+       v
+    HTML + CSS + JavaScript
+       |
+       v
+    Node.js / Express server
+       |
+       v
+    Authentication + API logic
+       |
+       v
+    MySQL database
+
+Example:
+
+When you add a student:
+
+1.  You fill the form in the browser.
+2.  JavaScript sends an HTTP request to the Node.js API.
+3.  Express receives the request.
+4.  Authentication middleware checks the logged-in session where
+    required.
+5.  The server validates/processes the data.
+6.  MySQL stores the student record.
+7.  The server returns a response.
+8.  The frontend updates the visible student list.
+
+------------------------------------------------------------------------
+
+25. Common Error: MySQL Connection Failed
+
+If the terminal shows a MySQL connection error:
+
+Check 1 - Is MySQL running?
+
+Start the MySQL Server service.
+
+Check 2 - Is the password correct?
+
+Open .env and verify:
+
+    DB_PASSWORD=YOUR_PASSWORD
+
+Check 3 - Is the username correct?
+
+Usually:
+
+    DB_USER=root
+
+Check 4 - Is the host correct?
+
+Usually:
+
+    DB_HOST=localhost
+
+Check 5 - Does the database exist?
+
+In MySQL Workbench, verify:
+
+    student_management
+
+Check 6 - Did you restart the Node server?
+
+After changing .env, stop the server with Ctrl+C and start it again:
+
+    npm start
+
+------------------------------------------------------------------------
+
+26. Common Error: “npm is not recognized”
+
+Node.js is not correctly installed or is not available in PATH.
+
+Fix:
+
+1.  Install/reinstall Node.js LTS from: https://nodejs.org/
+
+2.  Restart the terminal.
+
+3.  Run:
+
+    node -v
+
+    npm -v
+
+------------------------------------------------------------------------
+
+27. Common Error: “Cannot find module”
+
+First try:
+
+    npm install
+
+Then start again:
+
+    npm start
+
+If the problem continues, check the exact error message. Do not randomly
+delete project files.
+
+------------------------------------------------------------------------
+
+28. Common Error: Port 3000 Is Already in Use
+
+Another application may already be using port 3000.
+
+Option 1:
+
+Stop the other application.
+
+Option 2:
+
+Change the port in .env:
+
+    PORT=3001
+
+Then restart the server and open:
+
+    http://localhost:3001
+
+------------------------------------------------------------------------
+
+29. Common Error: Database Does Not Exist
+
+If MySQL says the database is missing:
+
+1.  Open MySQL Workbench.
+2.  Open database/schema.sql.
+3.  Run the SQL script.
+4.  Refresh the database/schema list.
+5.  Confirm student_management exists.
+6.  Restart the Node.js server.
+
+Remember that rerunning the schema may reset existing project
+tables/data.
+
+------------------------------------------------------------------------
+
+30. Common Error: Login Does Not Work
+
+Check:
+
+1.  The database script was executed successfully.
+2.  The demo users exist in the users table.
+3.  The email was typed correctly.
+4.  The password was typed correctly.
+5.  The Node.js server is connected to the same MySQL database.
+6.  .env has the correct database credentials.
+7.  You restarted the Node.js server after changing .env.
+
+Demo credentials:
+
+    admin@example.com
+    admin123
+
+    faculty@example.com
+    faculty123
+
+------------------------------------------------------------------------
+
+31. Security Rules for Real Use
+
+This project is suitable for learning and local development.
+
+Before using it with real student information:
+
+-   Change demo passwords.
+-   Use a strong random JWT secret.
+-   Use a dedicated MySQL database user instead of relying on root.
+-   Use HTTPS in production.
+-   Protect .env.
+-   Add stronger input validation.
+-   Add audit logging if required.
+-   Add backups and restore procedures.
+-   Review role permissions.
+-   Review privacy and data-retention requirements.
+-   Test authorization on every protected API route.
+-   Configure secure cookies for HTTPS production deployment.
+-   Do not expose the MySQL server directly to the public internet.
+
+Student information can be sensitive. Do not put real student data into
+a public demo deployment without appropriate security and authorization
+controls.
+
+------------------------------------------------------------------------
+
+32. Important: Do Not Upload .env to GitHub
+
+Your .env file can contain:
+
+-   database password
+-   JWT secret
+-   other private configuration
+
+Never publish those secrets.
+
+The project includes .gitignore to help prevent accidental Git commits
+of .env.
+
+Use .env.example as the shareable template.
+
+------------------------------------------------------------------------
+
+33. Recommended Development Workflow
+
+Whenever you work on this project:
+
+1.  Start MySQL.
+
+2.  Open the project folder.
+
+3.  Open terminal in the project folder.
+
+4.  Start the server:
+
+    npm start
+
+5.  Open:
+
+    http://localhost:3000
+
+6.  Test the feature in the browser.
+
+7.  Check the terminal for backend errors.
+
+8.  Check MySQL when you need to verify stored data.
+
+9.  Stop the server with Ctrl+C when finished.
+
+------------------------------------------------------------------------
+
+34. If You Want to Modify the Project
+
+For frontend changes:
+
+-   HTML: public/index.html
+-   CSS: public/css/style.css
+-   Browser JavaScript: public/js/app.js
+
+For backend/API/database logic:
+
+-   Node/Express: server.js
+-   Authentication middleware: middleware/auth.js
+-   Database structure/seed: database/schema.sql
+
+After backend changes, restart the Node.js server.
+
+For frontend JavaScript/CSS/HTML changes, refresh the browser. If the
+browser is caching an old file, use a hard refresh.
+
+------------------------------------------------------------------------
+
+35. Basic Command Cheat Sheet
+
+Open the project folder:
+
+    cd C:\Projects\student-management-system
+
+Install dependencies:
+
+    npm install
+
+Start the server:
+
+    npm start
+
+Stop the server:
+
+    Ctrl + C
+
+Check Node.js:
+
+    node -v
+
+Check npm:
+
+    npm -v
+
+Website:
+
+    http://localhost:3000
+
+------------------------------------------------------------------------
+
+36. First-Time Setup Checklist
+
+Before opening the website, confirm all of these:
+
+[ ] Node.js is installed.
+
+[ ] npm works.
+
+[ ] MySQL Server is installed.
+
+[ ] MySQL Server is running.
+
+[ ] MySQL Workbench is installed/reachable.
+
+[ ] The project ZIP has been extracted.
+
+[ ] The terminal is opened in the project folder.
+
+[ ] npm install completed successfully.
+
+[ ] database/schema.sql was executed.
+
+[ ] student_management database exists.
+
+[ ] .env was created from .env.example.
+
+[ ] MySQL username is correct.
+
+[ ] MySQL password is correct.
+
+[ ] DB_NAME=student_management is correct.
+
+[ ] JWT_SECRET has been set.
+
+[ ] npm start is running.
+
+[ ] http://localhost:3000 opens in the browser.
+
+[ ] Demo login works.
+
+------------------------------------------------------------------------
+
+37. Important Difference: JavaScript vs TypeScript
+
+This project is written in JavaScript, not TypeScript.
+
+The main backend file is:
+
+    server.js
+
+not:
+
+    server.ts
+
+The setup/instruction document is intentionally provided as:
+
+    SETUP_GUIDE.txt
+
+This is a text instruction file, not an executable TypeScript source
+file.
+
+------------------------------------------------------------------------
+
+38. Final Quick Start
+
+After the first-time installation is complete, the normal startup
+process is only:
+
+1.  Start MySQL.
+
+2.  Open the project folder.
+
+3.  Open terminal there.
+
+4.  Run:
+
+    npm start
+
+5.  Open:
+
+    http://localhost:3000
+
+6.  Login with a demo account.
+
+7.  Test Students, Attendance, and Marks.
+
+You do not need to reinstall Node.js, MySQL, or npm packages every time.
+
+------------------------------------------------------------------------
+
+39. Official Installation Sources
+
+Node.js: https://nodejs.org/
+
+MySQL Installer for Windows: https://dev.mysql.com/downloads/installer/
+
+MySQL documentation: https://dev.mysql.com/doc/
+
+Always prefer the official websites above when downloading development
+software.
